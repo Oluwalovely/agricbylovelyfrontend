@@ -67,23 +67,21 @@ const Sidebar = ({ isOpen, onClose }) => {
                 {/* Logo area */}
                 <div
                     className="flex items-center justify-between px-4 py-4"
-                    style={{ borderBottom: '1px solid var(--border)', minHeight: '64px' }}
+                    style={{ borderBottom: ' var(--border)', minHeight: '80px' }}
                 >
                     {!collapsed && (
-                        <div className="flex items-center gap-2.5">
-                            {/* Logo placeholder — replace src with your actual logo */}
+                        <div className="flex-1 flex items-center justify-center">
                             <div
-                                className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-                                style={{ background: 'var(--green-light)' }}
+                                className="w-20 h-20 rounded-2xl flex items-center justify-center"
+                                
                             >
-                                <Sprout size={18} style={{ color: 'var(--green-dark)' }} />
+                                <img
+                                    src="/src/assets/logo.png"
+                                    alt="AgricbyLovely"
+                                    className="w-18 h-18 object-contain"
+                                    style={{ filter: 'brightness(1.15) contrast(1.1)' }}
+                                />
                             </div>
-                            <span
-                                className="text-base font-semibold leading-tight"
-                                style={{ fontFamily: 'var(--font-serif)', color: 'var(--green-dark)' }}
-                            >
-                                AgricbyLovely
-                            </span>
                         </div>
                     )}
 
@@ -171,7 +169,6 @@ const Sidebar = ({ isOpen, onClose }) => {
                         )}
                     </NavLink>
 
-                    {/* Logout button */}
                     {/* Logout button */}
                     <button
                         onClick={() => setShowLogoutModal(true)}

@@ -5,7 +5,7 @@ import useAuthStore from '../../store/authStore.js'
 import useThemeStore from '../../store/themeStore.js'
 import notificationService from '../../services/notification.service.js'
 
-// Page title map — maps route path to a readable title
+
 const pageTitles = {
     '/dashboard': 'Dashboard',
     '/crops': 'Crop Encyclopedia',
