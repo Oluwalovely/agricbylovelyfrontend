@@ -25,7 +25,9 @@ const Dashboard = () => {
         enabled: !!farmer?.id,
         queryFn: async ({ signal }) => {
             const { data } = await reportService.getDashboard(signal)
-            for (const key of ['notifications', 'notifications-count']) void queryClient.invalidateQueries({ queryKey: [key, farmer.id] }, { cancelRefetch: false })
+            if (data.notificationSync?.createdCount > 0) {
+                for (const key of ['notifications', 'notifications-count']) void queryClient.invalidateQueries({ queryKey: [key, farmer.id] }, { cancelRefetch: false })
+            }
             return data
         },
         refetchInterval: 5 * 60 * 1000,

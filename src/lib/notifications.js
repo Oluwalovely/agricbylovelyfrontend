@@ -5,9 +5,6 @@ export function notificationSelection(params) {
 export function refreshNotifications(client, farmerId) {
   return Promise.all(['notifications', 'notifications-count', 'dashboard'].map(key => client.invalidateQueries({ queryKey: [key, farmerId] }, { cancelRefetch: false })))
 }
-export function notificationPollInterval(query) {
-  return query.state.status === 'success' && query.state.fetchStatus === 'idle' ? 60000 : false
-}
 export function belongsToFarmer(notification, farmerId) {
   return !!farmerId && notification.farmerId === farmerId
 }

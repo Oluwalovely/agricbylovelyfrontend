@@ -7,7 +7,7 @@ import Button from '../components/ui/Button.jsx'
 import QueryState from '../components/reports/QueryState.jsx'
 import { Message } from '../components/farm/FarmForm.jsx'
 import { panelStyle } from '../lib/farmSetup.js'
-import { notificationSelection, refreshNotifications, notificationPollInterval } from '../lib/notifications.js'
+import { notificationSelection, refreshNotifications } from '../lib/notifications.js'
 import { apiErrorMessage } from '../services/api.js'
 
 export default function Notifications() {
@@ -18,7 +18,11 @@ export default function Notifications() {
   const [confirm, setConfirm] = useState(null)
   const [notice, setNotice] = useState('')
   const [manualRefreshing, setManualRefreshing] = useState(false)
-  const query = useQuery({ queryKey: ['notifications', farmer.id, page, unreadOnly], queryFn: ({ signal }) => notificationService.getAll({ page, limit: 10, unreadOnly: String(unreadOnly) }, signal).then(r => r.data), refetchInterval: notificationPollInterval, retry: false })
+  const query = useQuery({ queryKey: ['notifications', farmer.id, page, unreadOnly], queryFn: async ({ signal }) => {
+    const { data } = await notificationService.getAll({ page, limit: 10, unreadOnly: String(unreadOnly) }, signal)
+    client.setQueryData(['notifications-count', farmer.id], { unreadCount: data.unreadCount })
+    return data
+  }, refetchOnMount: 'always', retry: false })
   const data = query.data
   useEffect(() => {
     if (data && page > Math.max(1, data.pages)) setParams({ status: unreadOnly ? 'unread' : 'all', page: Math.max(1, data.pages) }, { replace: true })
