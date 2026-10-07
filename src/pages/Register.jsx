@@ -1,3 +1,5 @@
+import logoImage from '../assets/logo.png'
+import farmImage from '../assets/agricbylov1.avif'
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
@@ -88,7 +90,7 @@ const Register = () => {
             <div className="hidden lg:flex flex-1 flex-col justify-center items-center p-12 relative overflow-hidden">
                 {/* Background farm photo */}
                 <img
-                    src="/src/assets/agricbylov1.avif"
+                    src={farmImage}
                     alt=""
                     className="absolute inset-0 w-full h-full object-cover"
                 />
@@ -101,7 +103,7 @@ const Register = () => {
                 <div className="max-w-xs text-center relative z-10">
                     <div className="w-40 mx-auto mb-6">
                         <img
-                            src="/src/assets/logo.png"
+                            src={logoImage}
                             alt="AgricbyLovely"
                             className="w-full h-full object-contain"
                             style={{ filter: 'brightness(0) invert(1)' }}
@@ -163,7 +165,7 @@ const Register = () => {
                         <Link to="/" className="flex items-center gap-2.5 no-underline mb-2">
                             <div className="rounded-xl flex items-center justify-center" style={{ width: '40%' }}>
                                 <img
-                                    src="/src/assets/logo.png"
+                                    src={logoImage}
                                     alt="AgricbyLovely"
                                     className="w-full h-full object-contain"
                                 />

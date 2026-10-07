@@ -1,3 +1,4 @@
+import logoImage from '../assets/logo.png'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
@@ -48,7 +49,7 @@ const ForgotPassword = () => {
                                         className="rounded-xl flex items-center justify-center"
                                         style={{ width: '120px' }}
                                     >
-                                        <img src="/src/assets/logo.png" alt="AgricbyLovely" className="w-full h-full object-contain" />
+                                        <img src={logoImage} alt="AgricbyLovely" className="w-full h-full object-contain" />
                                     </div>
                                 </Link>
                             </div>

@@ -1,3 +1,4 @@
+import logoImage from '../../assets/logo.png'
 import { NavLink, useNavigate } from 'react-router-dom'
 import Modal from '../ui/Modal.jsx'
 import {
@@ -76,7 +77,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                                 
                             >
                                 <img
-                                    src="/src/assets/logo.png"
+                                    src={logoImage}
                                     alt="AgricbyLovely"
                                     className="w-18 h-18 object-contain"
                                     style={{ filter: 'brightness(1.15) contrast(1.1)' }}
