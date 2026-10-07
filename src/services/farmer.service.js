@@ -1,7 +1,7 @@
 import api from './api.js'
 
 const farmerService = {
-    getProfile: () => api.get('/farmers/me'),
+    getProfile: (signal) => api.get('/farmers/me', { signal }),
     updateProfile: (data) => api.put('/farmers/me', data),
     changePassword: (data) => api.put('/farmers/me/password', data),
     deleteAccount: () => api.delete('/farmers/me'),
