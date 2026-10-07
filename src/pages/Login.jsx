@@ -12,7 +12,7 @@ import { useMutation } from '@tanstack/react-query'
 import Button from '../components/ui/Button.jsx'
 import Input from '../components/ui/Input.jsx'
 import authService from '../services/auth.service.js'
-import farmerService from '../services/farmer.service.js'
+import { apiErrorMessage } from '../services/api.js'
 import useAuthStore from '../store/authStore.js'
 import logoImage from '../assets/logo.png'
 import farmImage from '../assets/agricbylov1.avif'
@@ -26,7 +26,7 @@ const Login = () => {
     const location = useLocation()
     const successMessage = location.state?.message
     const [showPassword, setShowPassword] = useState(false)
-    const { setAuth, setFarmer } = useAuthStore()
+    const { setAuth } = useAuthStore()
     const navigate = useNavigate()
 
     const { register, handleSubmit, formState: { errors } } = useForm({
@@ -35,14 +35,10 @@ const Login = () => {
 
     const { mutate: login, isPending, error } = useMutation({
         mutationFn: (data) => authService.login(data),
-        onSuccess: async (res) => {
+        onSuccess: (res) => {
             const { farmer, accessToken, refreshToken } = res.data
             setAuth(farmer, accessToken, refreshToken)
-            try {
-                const profile = await farmerService.getProfile()
-                setFarmer(profile.data.farmer)
-            } catch { }
-            navigate('/dashboard')
+            navigate(location.state?.from?.pathname || '/dashboard', { replace: true })
         },
     })
 
@@ -91,7 +87,7 @@ const Login = () => {
                             className="px-4 py-3 rounded-xl text-sm mb-5"
                             style={{ background: 'var(--red-light)', color: '#712B13', border: '1px solid #E24B4A' }}
                         >
-                            {error.response?.data?.message || 'Invalid email or password'}
+                            {apiErrorMessage(error, 'Unable to sign in. Please try again.')}
                         </div>
                     )}
 

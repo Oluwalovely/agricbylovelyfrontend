@@ -3,7 +3,7 @@ import { NavLink, useNavigate } from 'react-router-dom'
 import Modal from '../ui/Modal.jsx'
 import {
     LayoutDashboard, Sprout, Wheat, MapPin, CloudSun,
-    CalendarDays, Bell, BarChart3, User, LogOut, X, ChevronLeft, ChevronRight
+    CalendarDays, Bell, BarChart3, LogOut, X, ChevronLeft, ChevronRight
 } from 'lucide-react'
 import { useState } from 'react'
 import useAuthStore from '../../store/authStore.js'
@@ -25,17 +25,13 @@ const Sidebar = ({ isOpen, onClose }) => {
     const [collapsed, setCollapsed] = useState(false)
     const [showLogoutModal, setShowLogoutModal] = useState(false)
 
-    const { farmer, clearAuth } = useAuthStore()
+    const { farmer } = useAuthStore()
     const navigate = useNavigate()
 
-    const handleLogout = async () => {
-        try {
-            await authService.logout()
-        } catch { }
-
+    const handleLogout = () => {
+        void authService.logout().catch(() => { /* Local session is already cleared. */ })
         setShowLogoutModal(false)
-        clearAuth()
-        navigate('/login')
+        navigate('/login', { replace: true })
     }
 
     return (

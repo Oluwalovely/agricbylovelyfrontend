@@ -1,45 +1,54 @@
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import { io } from 'socket.io-client'
 import useAuthStore from '../store/authStore.js'
-
+import { accessToken } from '../services/session.js'
+import { refreshAccessToken } from '../services/api.js'
 
 const useSocket = (onNotification) => {
-    const socketRef = useRef(null)
-    const { farmer, isLoggedIn } = useAuthStore()
+  const farmerId = useAuthStore(state => state.farmer?.id)
+  const isLoggedIn = useAuthStore(state => state.isLoggedIn)
 
-    useEffect(() => {
-        if (!isLoggedIn || !farmer) return
+  useEffect(() => {
+    if (!isLoggedIn || !farmerId) return
+    let active = true
+    let retryTimer
+    let refreshing = false
+    const socket = io(import.meta.env.VITE_SOCKET_URL || 'http://localhost:8001', {
+      withCredentials: true,
+      auth: callback => callback({ token: accessToken() }),
+    })
 
-        // Connect to the backend Socket.io server
-        socketRef.current = io(
-            import.meta.env.VITE_SOCKET_URL || 'http://localhost:8001',
-            { withCredentials: true }
-        )
-
-        const socket = socketRef.current
-
-        socket.on('connect', () => {
-            // Join the farmer's private room
-            socket.emit('join', farmer.id)
-            console.log('Socket connected and joined farmer room')
-        })
-
-        // Listen for new notifications pushed from the server
-        socket.on('new_notification', (notification) => {
-            if (onNotification) onNotification(notification)
-        })
-
-        socket.on('disconnect', () => {
-            console.log('Socket disconnected')
-        })
-
-        // Cleanup on unmount or logout
-        return () => {
-            socket.disconnect()
+    const reconnect = async () => {
+      if (!active || refreshing) return
+      refreshing = true
+      try {
+        await refreshAccessToken()
+        if (active) socket.connect()
+      } catch {
+        if (active && useAuthStore.getState().isLoggedIn) {
+          retryTimer = setTimeout(reconnect, 10000)
         }
-    }, [isLoggedIn, farmer?.id])
+      } finally {
+        refreshing = false
+      }
+    }
+    socket.on('new_notification', onNotification)
+    socket.on('connect_error', error => {
+      if (error.data?.code === 'UNAUTHORIZED') void reconnect()
+      else if (error.data?.code === 'UNAVAILABLE') {
+        retryTimer = setTimeout(() => { if (active) socket.connect() }, 10000)
+      }
+    })
+    socket.on('disconnect', reason => {
+      if (reason === 'io server disconnect') void reconnect()
+    })
 
-    return socketRef.current
+    return () => {
+      active = false
+      clearTimeout(retryTimer)
+      socket.disconnect()
+    }
+  }, [isLoggedIn, farmerId, onNotification])
 }
 
 export default useSocket

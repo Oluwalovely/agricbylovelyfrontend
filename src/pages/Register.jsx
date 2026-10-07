@@ -11,7 +11,7 @@ import Button from '../components/ui/Button.jsx'
 import Input from '../components/ui/Input.jsx'
 import Select from '../components/ui/Select.jsx'
 import authService from '../services/auth.service.js'
-import useAuthStore from '../store/authStore.js'
+import { apiErrorMessage } from '../services/api.js'
 
 const step1Schema = z.object({
     firstName: z.string().min(2, 'First name must be at least 2 characters'),
@@ -41,7 +41,7 @@ const Register = () => {
     const [step1Data, setStep1Data] = useState(null)
     const [locating, setLocating] = useState(false)
     const [location, setLocation] = useState({ latitude: null, longitude: null })
-    const { setAuth } = useAuthStore()
+
     const navigate = useNavigate()
 
     const form1 = useForm({ resolver: zodResolver(step1Schema) })
@@ -79,7 +79,7 @@ const Register = () => {
             ...step1Data,
             ...data,
             farmSizeHa: data.farmSizeHa ? parseFloat(data.farmSizeHa) : undefined,
-            ...location,
+            ...(location.latitude !== null && location.longitude !== null ? location : {}),
         })
     }
 
@@ -196,7 +196,7 @@ const Register = () => {
                             className="px-4 py-3 rounded-xl text-sm mb-5"
                             style={{ background: 'var(--red-light)', color: '#712B13', border: '1px solid #E24B4A' }}
                         >
-                            {error.response?.data?.message || 'Something went wrong. Please try again.'}
+                            {apiErrorMessage(error, 'Something went wrong. Please try again.')}
                         </div>
                     )}
 

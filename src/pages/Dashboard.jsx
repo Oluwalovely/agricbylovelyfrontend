@@ -19,11 +19,19 @@ const Dashboard = () => {
     const { showOnboarding, completeOnboarding } = useOnboarding()
     const navigate = useNavigate()
 
-    const { data, isLoading } = useQuery({
-        queryKey: ['dashboard'],
-        queryFn: () => reportService.getDashboard().then(r => r.data),
+    const { data, isLoading, error, refetch } = useQuery({
+        queryKey: ['dashboard', farmer?.id],
+        enabled: !!farmer?.id,
+        queryFn: ({ signal }) => reportService.getDashboard(signal).then(r => r.data),
         refetchInterval: 5 * 60 * 1000,
     })
+
+    if (error) return (
+        <div role="alert" className="flex flex-col items-start gap-4">
+            <p>Unable to load your farm dashboard. Your saved records have not been removed.</p>
+            <Button onClick={() => refetch()}>Try again</Button>
+        </div>
+    )
 
     const dashboard = data
 

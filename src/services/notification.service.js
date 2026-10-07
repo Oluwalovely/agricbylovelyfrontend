@@ -1,7 +1,7 @@
 import api from './api.js'
 
 const notificationService = {
-    getAll: (params) => api.get('/notifications', { params }),
+    getAll: (params, signal) => api.get('/notifications', { params, signal }),
     markOneRead: (id) => api.put(`/notifications/${id}/read`),
     markAllRead: () => api.put('/notifications/read-all'),
     deleteOne: (id) => api.delete(`/notifications/${id}`),

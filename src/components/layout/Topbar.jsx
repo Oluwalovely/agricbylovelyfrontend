@@ -28,8 +28,9 @@ const Topbar = ({ onMenuClick }) => {
 
     // Fetch unread notification count
     const { data } = useQuery({
-        queryKey: ['notifications-count'],
-        queryFn: () => notificationService.getAll({ limit: 1 }).then(r => r.data),
+        queryKey: ['notifications-count', farmer?.id],
+        enabled: !!farmer?.id,
+        queryFn: ({ signal }) => notificationService.getAll({ limit: 1 }, signal).then(r => r.data),
         refetchInterval: 30000, // refetch every 30 seconds
     })
 

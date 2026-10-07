@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { MapPin, Sprout, Compass, ChevronRight, X, Check, Loader2, CloudSun, Leaf, CalendarDays, Bell } from 'lucide-react'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { MapPin, Sprout, Compass, ChevronRight, Check, Loader2, CloudSun, Leaf, CalendarDays, Bell } from 'lucide-react'
+import { useMutation } from '@tanstack/react-query'
 import Button from '../ui/Button.jsx'
 import Input from '../ui/Input.jsx'
 import Select from '../ui/Select.jsx'

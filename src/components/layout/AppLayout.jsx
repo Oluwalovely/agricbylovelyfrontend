@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import Sidebar from './Sidebar.jsx'
 import Topbar from './Topbar.jsx'
 import ToastContainer from '../ui/Toast.jsx'
@@ -14,10 +14,13 @@ const AppLayout = () => {
     const queryClient = useQueryClient()
     const bgImage = usePageBackground()
 
-    useSocket((notification) => {
+    const onNotification = useCallback((notification) => {
         toast.info(notification.title, notification.message)
         queryClient.invalidateQueries({ queryKey: ['notifications-count'] })
-    })
+        queryClient.invalidateQueries({ queryKey: ['notifications'] })
+        queryClient.invalidateQueries({ queryKey: ['dashboard'] })
+    }, [queryClient, toast])
+    useSocket(onNotification)
 
     useEffect(() => {
         const handleResize = () => {

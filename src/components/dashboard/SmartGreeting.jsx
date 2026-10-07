@@ -17,13 +17,9 @@ const SmartGreeting = ({ farmer, dashboard }) => {
     const overdueHarvest = upcomingEvents.find(e => e.type === 'OVERDUE')
     const criticalAlert = weatherAlerts.find(a => a.type === 'WEATHER' || a.type === 'PEST')
 
-    const weatherIcon = () => {
-        const desc = dashboard?.weather?.description?.toLowerCase() || ''
-        if (desc.includes('rain') || desc.includes('storm')) return CloudRain
-        if (desc.includes('cloud')) return CloudSun
-        return Sun
-    }
-    const WeatherIcon = weatherIcon()
+    const description = dashboard?.weather?.description?.toLowerCase() || ''
+    const WeatherIcon = description.includes('rain') || description.includes('storm')
+        ? CloudRain : description.includes('cloud') ? CloudSun : Sun
 
     const getFocusContent = () => {
         if (overdueHarvest) return {

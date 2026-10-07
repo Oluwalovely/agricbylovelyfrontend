@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useMemo } from 'react'
 
 
 const useToast = () => {
@@ -19,12 +19,12 @@ const useToast = () => {
     }, [])
 
     // Convenience methods
-    const toast = {
+    const toast = useMemo(() => ({
         success: (title, message) => addToast({ type: 'success', title, message }),
         error: (title, message) => addToast({ type: 'error', title, message }),
         warning: (title, message) => addToast({ type: 'warning', title, message }),
         info: (title, message) => addToast({ type: 'info', title, message }),
-    }
+    }), [addToast])
 
     return { toasts, toast, removeToast }
 }

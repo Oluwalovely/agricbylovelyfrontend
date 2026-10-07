@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { useEffect } from 'react'
 import useAuthStore from './store/authStore.js'
 import useThemeStore from './store/themeStore.js'
+import { syncExternalSession } from './services/session.js'
 
 // Pages
 import Landing    from './pages/Landing.jsx'
@@ -30,7 +31,17 @@ const App = () => {
   useEffect(() => {
     checkAuth()  // check if tokens exist in localStorage
     initTheme()  // apply saved theme preference
-  }, [])
+  }, [checkAuth, initTheme])
+
+  useEffect(() => {
+    const handleStorage = event => {
+      if (event.key !== null && !['accessToken', 'refreshToken'].includes(event.key)) return
+      syncExternalSession()
+      void checkAuth({ force: true })
+    }
+    window.addEventListener('storage', handleStorage)
+    return () => window.removeEventListener('storage', handleStorage)
+  }, [checkAuth])
 
   return (
     <BrowserRouter>
