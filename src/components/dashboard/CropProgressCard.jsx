@@ -1,4 +1,5 @@
 import { MapPin, Clock } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import Badge from '../ui/Badge.jsx'
 
 
@@ -59,7 +60,8 @@ const CropProgressCard = ({ farmerCrop }) => {
     const pct = progress || 0
 
     return (
-        <div
+        <Link
+            to={`/my-crops?record=${farmerCrop.id}&status=all`}
             className="flex-shrink-0 rounded-2xl p-4 flex flex-col gap-3 cursor-pointer transition-all duration-200 hover:-translate-y-1"
             style={{
                 width: '180px',
@@ -132,7 +134,7 @@ const CropProgressCard = ({ farmerCrop }) => {
                     <span className="text-xs truncate" style={{ color: 'var(--text-muted)' }}>{fieldName}</span>
                 </div>
             )}
-        </div>
+        </Link>
     )
 }
 

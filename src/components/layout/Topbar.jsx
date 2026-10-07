@@ -24,7 +24,7 @@ const Topbar = ({ onMenuClick }) => {
     const { farmer } = useAuthStore()
     const { isDark, toggleTheme } = useThemeStore()
 
-    const pageTitle = pageTitles[location.pathname] || 'AgricbyLovely'
+    const pageTitle = pageTitles[location.pathname] || (location.pathname.startsWith('/crops/') ? 'Crop guide' : 'AgricbyLovely')
 
     // Fetch unread notification count
     const { data } = useQuery({

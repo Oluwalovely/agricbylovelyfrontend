@@ -12,6 +12,7 @@ import ForgotPassword from './pages/ForgotPassword.jsx'
 import ResetPassword  from './pages/ResetPassword.jsx'
 import Dashboard  from './pages/Dashboard.jsx'
 import Crops      from './pages/Crops.jsx'
+import CropDetails from './pages/CropDetails.jsx'
 import MyCrops    from './pages/MyCrops.jsx'
 import Fields     from './pages/Fields.jsx'
 import Weather    from './pages/Weather.jsx'
@@ -58,6 +59,7 @@ const App = () => {
           <Route element={<AppLayout />}>
             <Route path="/dashboard"     element={<Dashboard />} />
             <Route path="/crops"         element={<Crops />} />
+            <Route path="/crops/:id"     element={<CropDetails />} />
             <Route path="/my-crops"      element={<MyCrops />} />
             <Route path="/fields"        element={<Fields />} />
             <Route path="/weather"       element={<Weather />} />

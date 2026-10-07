@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link, useSearchParams } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import FarmForm, { Message } from '../components/farm/FarmForm.jsx'
 import Button from '../components/ui/Button.jsx'
@@ -13,17 +14,18 @@ function FieldDetails({ id, farmerId, onClose }) {
     <div className="flex justify-between gap-4 mb-4"><h2 className="text-xl">{query.data?.name || 'Field details'}</h2><Button variant="ghost" onClick={onClose}>Close details</Button></div>
     {query.isPending ? <p role="status">Loading field records...</p> : query.error ? <div><Message error>{apiErrorMessage(query.error)}</Message><Button onClick={() => query.refetch()}>Try again</Button></div> : <>
       <p className="text-sm mb-3">{query.data.notes || 'No field notes yet.'}</p>
-      <h3 className="text-base mb-3">Planting records</h3>
-      {query.data.farmerCrops.length ? <ul>{query.data.farmerCrops.map(record => <li key={record.id} className="py-3 flex flex-wrap justify-between gap-2 border-b" style={{ borderColor: 'var(--border)' }}><span>{record.crop.name}</span><span className="text-sm" style={{ color: 'var(--text-secondary)' }}>{record.harvestedAt ? 'Harvested' : soilLabel(record.stage)} ? Planted {new Date(record.plantedAt).toLocaleDateString()}</span></li>)}</ul> : <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>No crops have been assigned to this field yet.</p>}
+      <div className="flex flex-wrap gap-4 text-sm mb-4"><Link className="underline" to={`/crops?field=${id}`}>Plant a crop in this field</Link><Link className="underline" to={`/my-crops?field=${id}&status=all`}>View this field?s plantings</Link></div><h3 className="text-base mb-3">Planting records</h3>
+      {query.data.farmerCrops.length ? <ul>{query.data.farmerCrops.map(record => <li key={record.id} className="py-3 flex flex-wrap justify-between gap-2 border-b" style={{ borderColor: 'var(--border)' }}><Link className="underline" to={`/my-crops?record=${record.id}&status=all`}>{record.crop.name}</Link><span className="text-sm" style={{ color: 'var(--text-secondary)' }}>{record.harvestedAt ? 'Harvested' : soilLabel(record.stage)} ? Planted {new Date(record.plantedAt).toLocaleDateString()}</span></li>)}</ul> : <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>No crops have been assigned to this field yet.</p>}
     </>}
   </section>
 }
 
 export default function Fields() {
+  const [params] = useSearchParams()
   const farmer = useAuthStore(s => s.farmer)
   const client = useQueryClient()
   const [editor, setEditor] = useState(null)
-  const [selected, setSelected] = useState(null)
+  const [selected, setSelected] = useState(params.get('field'))
   const [deleting, setDeleting] = useState(null)
   const [notice, setNotice] = useState('')
   const query = useQuery({ queryKey: ['fields', farmer.id], queryFn: ({ signal }) => fieldService.getAll(signal).then(r => r.data.fields) })
