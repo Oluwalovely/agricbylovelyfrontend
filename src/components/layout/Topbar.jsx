@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 import useAuthStore from '../../store/authStore.js'
 import useThemeStore from '../../store/themeStore.js'
 import notificationService from '../../services/notification.service.js'
+import { notificationPollInterval } from '../../lib/notifications.js'
 
 
 const pageTitles = {
@@ -31,7 +32,8 @@ const Topbar = ({ onMenuClick }) => {
         queryKey: ['notifications-count', farmer?.id],
         enabled: !!farmer?.id,
         queryFn: ({ signal }) => notificationService.getAll({ limit: 1 }, signal).then(r => r.data),
-        refetchInterval: 30000, // refetch every 30 seconds
+        refetchInterval: notificationPollInterval,
+        retry: false,
     })
 
     const unreadCount = data?.unreadCount || 0
