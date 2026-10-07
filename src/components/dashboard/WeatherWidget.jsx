@@ -9,7 +9,7 @@ const alertVariant = (type) => {
     return 'gray'
 }
 
-const WeatherWidget = ({ weather, status }) => {
+const WeatherWidget = ({ weather, status, notificationSync }) => {
     const navigate = useNavigate()
 
     if (!weather) return (
@@ -88,6 +88,7 @@ const WeatherWidget = ({ weather, status }) => {
                     <p className="text-xs font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>
                         Farming alerts
                     </p>
+                    {notificationSync?.status === 'UNAVAILABLE' && <p role="alert" className="text-xs mb-2">Advisories could not be saved. Open Weather and refresh to retry.</p>}
                     <div className="flex flex-col gap-1.5">
                         {weather.alerts.slice(0, 2).map((alert, i) => (
                             <div key={i} className="flex items-center gap-2">

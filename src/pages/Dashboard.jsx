@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { Plus, Sprout, ChevronRight } from 'lucide-react'
 import { SkeletonBar } from '../components/ui/Skeleton.jsx'
 import Button from '../components/ui/Button.jsx'
@@ -16,13 +16,18 @@ import reportService from '../services/report.service.js'
 
 const Dashboard = () => {
     const { farmer } = useAuthStore()
+    const queryClient = useQueryClient()
     const { showOnboarding, completeOnboarding } = useOnboarding()
     const navigate = useNavigate()
 
     const { data, isLoading, error, refetch } = useQuery({
         queryKey: ['dashboard', farmer?.id],
         enabled: !!farmer?.id,
-        queryFn: ({ signal }) => reportService.getDashboard(signal).then(r => r.data),
+        queryFn: async ({ signal }) => {
+            const { data } = await reportService.getDashboard(signal)
+            for (const key of ['notifications', 'notifications-count']) void queryClient.invalidateQueries({ queryKey: [key, farmer.id] })
+            return data
+        },
         refetchInterval: 5 * 60 * 1000,
     })
 
@@ -117,7 +122,7 @@ const Dashboard = () => {
                             </div>
                         </div>
                     ) : (
-                        <WeatherWidget weather={dashboard?.weather} status={dashboard?.weatherStatus} />
+                        <WeatherWidget weather={dashboard?.weather} status={dashboard?.weatherStatus} notificationSync={dashboard?.notificationSync} />
                     )}
                 </div>
                 <div>
