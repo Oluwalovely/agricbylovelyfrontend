@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import PlantingActions from '../components/crops/PlantingActions.jsx'
 import { Link, useSearchParams } from 'react-router-dom'
 import cropService from '../services/crop.service.js'
@@ -17,6 +17,10 @@ export default function MyCrops() {
   const [params, setParams] = useSearchParams()
   const [notice, setNotice] = useState('')
   const query = useQuery({ queryKey: ['my-crops', farmer.id], queryFn: ({ signal }) => cropService.getMyCrops(signal).then(r => r.data.farmerCrops) })
+  useEffect(() => {
+    const id = params.get('record')
+    if (id && query.isSuccess) document.getElementById(`planting-${id}`)?.scrollIntoView({ block: 'start' })
+  }, [params, query.isSuccess, query.data])
   const status = ['active', 'harvested', 'all'].includes(params.get('status')) ? params.get('status') : 'active'
   const fieldId = params.get('field')
   const records = (query.data || []).filter(record => (!fieldId || record.fieldId === fieldId) && (status === 'all' || (status === 'harvested' ? !!record.harvestedAt : !record.harvestedAt)))
