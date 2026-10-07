@@ -116,6 +116,7 @@ const Topbar = ({ onMenuClick }) => {
                         color: 'var(--text-muted)',
                     }}
                     title="Notifications"
+                    aria-label={`Notifications${unreadCount ? `, ${unreadCount} unread` : ''}`}
                 >
                     <Bell size={16} />
                     {/* Unread badge */}

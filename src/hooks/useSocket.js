@@ -4,7 +4,7 @@ import useAuthStore from '../store/authStore.js'
 import { accessToken } from '../services/session.js'
 import { refreshAccessToken } from '../services/api.js'
 
-const useSocket = (onNotification) => {
+const useSocket = (onNotification, onReconnect) => {
   const farmerId = useAuthStore(state => state.farmer?.id)
   const isLoggedIn = useAuthStore(state => state.isLoggedIn)
 
@@ -32,7 +32,14 @@ const useSocket = (onNotification) => {
         refreshing = false
       }
     }
-    socket.on('new_notification', onNotification)
+    const seen = new Set()
+    socket.on('new_notification', notification => {
+      if (!active || notification.farmerId !== farmerId || seen.has(notification.id)) return
+      seen.add(notification.id)
+      if (seen.size > 100) seen.delete(seen.values().next().value)
+      onNotification(notification)
+    })
+    socket.on('connect', () => { if (active) onReconnect?.() })
     socket.on('connect_error', error => {
       if (error.data?.code === 'UNAUTHORIZED') void reconnect()
       else if (error.data?.code === 'UNAVAILABLE') {
@@ -48,7 +55,7 @@ const useSocket = (onNotification) => {
       clearTimeout(retryTimer)
       socket.disconnect()
     }
-  }, [isLoggedIn, farmerId, onNotification])
+  }, [isLoggedIn, farmerId, onNotification, onReconnect])
 }
 
 export default useSocket

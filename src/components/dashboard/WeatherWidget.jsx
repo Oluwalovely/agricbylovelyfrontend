@@ -9,15 +9,13 @@ const alertVariant = (type) => {
     return 'gray'
 }
 
-const WeatherWidget = ({ weather }) => {
+const WeatherWidget = ({ weather, status }) => {
     const navigate = useNavigate()
 
     if (!weather) return (
         <div className="rounded-2xl p-5 flex items-center justify-center h-full"
             style={{ background: 'var(--bg-primary)', border: '1px solid var(--border)', minHeight: '200px' }}>
-            <p className="text-sm" style={{ color: 'var(--text-muted)' }}>
-                Update your farm location to see weather
-            </p>
+            <div><p className="text-sm mb-3" style={{ color: 'var(--text-secondary)' }}>{status === 'UNAVAILABLE' ? 'Weather is unavailable right now. Your farm records are still available.' : 'Add your farm coordinates to see local weather.'}</p><button className="text-sm underline" onClick={() => navigate(status === 'UNAVAILABLE' ? '/weather' : '/profile')}>{status === 'UNAVAILABLE' ? 'Retry on Weather' : 'Edit farm location'}</button></div>
         </div>
     )
 
@@ -40,7 +38,7 @@ const WeatherWidget = ({ weather }) => {
                             </span>
                         </div>
                         <p className="text-xs mt-2" style={{ color: 'rgba(255,255,255,0.6)' }}>
-                            Feels like {weather.feelsLike || weather.temp}°C
+                            Feels like {weather.feelsLike ?? weather.temp}°C
                         </p>
                     </div>
 
@@ -70,7 +68,7 @@ const WeatherWidget = ({ weather }) => {
                     {weather.forecast.slice(0, 3).map((day, i) => (
                         <div key={i} className="px-3 py-3 text-center" style={{ borderColor: 'var(--border)' }}>
                             <p className="text-xs font-medium mb-1" style={{ color: 'var(--text-muted)' }}>
-                                {i === 0 ? 'Tomorrow' : new Date(day.date).toLocaleDateString('en', { weekday: 'short' })}
+                                {new Date(`${day.date}T00:00:00Z`).toLocaleDateString('en', { timeZone: 'UTC', month: 'short', day: 'numeric' })}
                             </p>
                             <p className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>
                                 {day.tempMax}°

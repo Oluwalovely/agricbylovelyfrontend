@@ -117,7 +117,7 @@ const Dashboard = () => {
                             </div>
                         </div>
                     ) : (
-                        <WeatherWidget weather={dashboard?.weather} />
+                        <WeatherWidget weather={dashboard?.weather} status={dashboard?.weatherStatus} />
                     )}
                 </div>
                 <div>

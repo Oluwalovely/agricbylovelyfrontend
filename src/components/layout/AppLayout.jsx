@@ -7,6 +7,8 @@ import useToast from '../../hooks/useToast.js'
 import useSocket from '../../hooks/useSocket.js'
 import usePageBackground from '../../hooks/usePageBackground.js'
 import { useQueryClient } from '@tanstack/react-query'
+import useAuthStore from '../../store/authStore.js'
+import { belongsToFarmer, refreshNotifications } from '../../lib/notifications.js'
 
 const AppLayout = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -15,12 +17,16 @@ const AppLayout = () => {
     const bgImage = usePageBackground()
 
     const onNotification = useCallback((notification) => {
+        const farmerId = useAuthStore.getState().farmer?.id
+        if (!belongsToFarmer(notification, farmerId)) return
         toast.info(notification.title, notification.message)
-        queryClient.invalidateQueries({ queryKey: ['notifications-count'] })
-        queryClient.invalidateQueries({ queryKey: ['notifications'] })
-        queryClient.invalidateQueries({ queryKey: ['dashboard'] })
+        void refreshNotifications(queryClient, farmerId)
     }, [queryClient, toast])
-    useSocket(onNotification)
+    const onReconnect = useCallback(() => {
+        const farmerId = useAuthStore.getState().farmer?.id
+        if (farmerId) void refreshNotifications(queryClient, farmerId)
+    }, [queryClient])
+    useSocket(onNotification, onReconnect)
 
     useEffect(() => {
         const handleResize = () => {
