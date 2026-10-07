@@ -14,6 +14,8 @@ import Input from '../components/ui/Input.jsx'
 import authService from '../services/auth.service.js'
 import farmerService from '../services/farmer.service.js'
 import useAuthStore from '../store/authStore.js'
+import logoImage from '../assets/logo.png'
+import farmImage from '../assets/agricbylov1.avif'
 
 const schema = z.object({
     email: z.string().email('Please enter a valid email'),
@@ -59,7 +61,7 @@ const Login = () => {
                         <Link to="/" className="flex items-center gap-2.5 no-underline mb-2">
                             <div className="rounded-xl flex items-center justify-center" style={{ width: '40%' }}>
                                 <img
-                                    src="/src/assets/logo.png"
+                                    src={logoImage}
                                     alt="AgricbyLovely"
                                     className="w-full h-full object-contain"
                                 />
@@ -153,7 +155,7 @@ const Login = () => {
             >
                 {/* Background farm photo */}
                 <img
-                    src="/src/assets/agricbylov1.avif"
+                    src={farmImage}
                     alt=""
                     className="absolute inset-0 w-full h-full object-cover"
                 />
@@ -166,7 +168,7 @@ const Login = () => {
                 <div className="max-w-xs text-center relative z-10">
                     <div className="w-40 mx-auto mb-6">
                         <img
-                            src="/src/assets/logo.png"
+                            src={logoImage}
                             alt="AgricbyLovely"
                             className="w-full h-full object-contain"
                             style={{ filter: 'brightness(0) invert(1)' }}
