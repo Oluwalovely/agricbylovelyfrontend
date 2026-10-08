@@ -3,7 +3,7 @@ import { NavLink, useNavigate } from 'react-router-dom'
 import Modal from '../ui/Modal.jsx'
 import {
     LayoutDashboard, Sprout, Wheat, MapPin, CloudSun,
-    CalendarDays, Bell, BarChart3, LogOut, X, ChevronLeft, ChevronRight
+    CalendarDays, Bell, BarChart3, LogOut, X, ChevronLeft, PanelLeftOpen
 } from 'lucide-react'
 import { useState } from 'react'
 import useAuthStore from '../../store/authStore.js'
@@ -99,10 +99,15 @@ const Sidebar = ({ isOpen, onClose }) => {
                         aria-expanded={!collapsed}
                         aria-controls="farm-navigation"
                         onClick={() => setCollapsed(value => !value)}
-                        className="hidden md:flex items-center justify-center w-8 h-8 rounded-lg transition-colors"
-                        style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)' }}
+                        className={`sidebar-brand-toggle hidden md:flex relative shrink-0 items-center justify-center rounded-lg ${collapsed ? 'w-11 h-11' : 'w-8 h-8'}`}
+                        style={{ border: 'none', cursor: 'pointer', color: 'var(--text-secondary)' }}
                     >
-                        {collapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
+                        {collapsed ? <>
+                            <span aria-hidden="true" className="sidebar-logo-symbol">
+                                <img src={logoImage} alt="" />
+                            </span>
+                            <PanelLeftOpen aria-hidden="true" size={20} className="sidebar-expand-symbol absolute" />
+                        </> : <ChevronLeft aria-hidden="true" size={16} />}
                     </button>
                 </div>
 

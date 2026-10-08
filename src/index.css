@@ -138,9 +138,64 @@ h3 {
     animation: accountLogoPulse 2s ease-in-out infinite;
 }
 
+.sidebar-brand-toggle {
+    background: transparent;
+}
+
+.sidebar-brand-toggle:hover,
+.sidebar-brand-toggle:focus-visible {
+    background: var(--bg-tertiary);
+}
+
+.sidebar-brand-toggle:focus-visible {
+    outline: 2px solid var(--green-mid);
+    outline-offset: 2px;
+}
+
+/* Crop the farm emblem from the existing full logo without a second asset. */
+.sidebar-logo-symbol {
+    position: relative;
+    display: block;
+    width: 32px;
+    height: 32px;
+    overflow: hidden;
+}
+
+.sidebar-logo-symbol img {
+    position: absolute;
+    width: 64px;
+    height: 64px;
+    max-width: none;
+    left: -16px;
+    top: -8px;
+}
+
+.sidebar-logo-symbol,
+.sidebar-expand-symbol {
+    transition: opacity 150ms ease-out;
+}
+
+.sidebar-expand-symbol {
+    opacity: 0;
+}
+
+.sidebar-brand-toggle:hover .sidebar-logo-symbol,
+.sidebar-brand-toggle:focus-visible .sidebar-logo-symbol {
+    opacity: 0;
+}
+
+.sidebar-brand-toggle:hover .sidebar-expand-symbol,
+.sidebar-brand-toggle:focus-visible .sidebar-expand-symbol {
+    opacity: 1;
+}
+
 @media (prefers-reduced-motion: reduce) {
     .account-loading-logo {
         animation: none;
+    }
+    .sidebar-logo-symbol,
+    .sidebar-expand-symbol {
+        transition: none;
     }
 }
 
