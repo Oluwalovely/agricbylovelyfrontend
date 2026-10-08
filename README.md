@@ -1,16 +1,41 @@
-# React + Vite
+# AgricByLovely
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A farm-records portfolio project for farmers in Nigeria. Record fields and plantings, follow crop stages, save harvest results, and check weather, reminders, calendar dates, and reports from one account.
 
-Currently, two official plugins are available:
+- Live website: https://agricbylovely.onrender.com
+- Backend repository: https://github.com/Oluwalovely/agricbylovely-backend
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Built with React, Vite, React Router, TanStack Query, Zustand, Tailwind CSS, and Socket.IO. The public homepage introduces the app; farm records require login.
 
-## React Compiler
+## Run locally
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Use Node.js 24. Start the backend on port 8001 following its README, copy `.env.example` to `.env`, then run:
 
-## Expanding the ESLint configuration
+```sh
+npm ci
+npm run dev
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Open `http://localhost:5173`. `VITE_API_URL` includes `/api`; `VITE_SOCKET_URL` is the backend origin without `/api`. Frontend variables are public build settings. Keep database and provider secrets in the backend environment.
+
+## Checks and build
+
+```sh
+npm test
+npm run lint
+npm run build
+```
+
+Tests cover session restoration, account switching, planting and harvest validation, calendar dates, notifications, and photo selection. Browser checks also cover page states, mobile layouts, public links, and keyboard access to the logout confirmation.
+
+## Features
+
+- Registration, login, profile editing, password recovery, and account photos.
+- Fields, crop growing guides, plantings, growth stages, and harvest records.
+- Calendar dates, crop summaries, and recorded yield history.
+- Local weather forecasts, saved advisories, and notification history.
+- Persistent field and planting photographs.
+
+Harvest dates are estimates until a harvest is recorded. Weather advisories are general guidance. The free-host backend may need time to wake up, and scheduled reminders are best effort while it is running.
+
+See [LANDING.md](LANDING.md) for the public page and labelled example screenshot, [DESIGN.md](DESIGN.md) for visual guidance, and the feature documents in this repository for implementation notes.

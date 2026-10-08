@@ -196,7 +196,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                     <Modal
                         isOpen={showLogoutModal}
                         onClose={() => setShowLogoutModal(false)}
-                        title="Logout of AgricbyLovely?"
+                        title="Log out of AgricByLovely?"
                         footer={
                             <>
                                 <button
@@ -216,7 +216,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                                     className="flex-1 py-2.5 rounded-full text-sm font-semibold text-white"
                                     style={{ background: '#E24B4A', border: 'none', cursor: 'pointer' }}
                                 >
-                                    Yes, logout
+                                    Log out
                                 </button>
                             </>
                         }
@@ -228,7 +228,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                             >
                                 <LogOut size={24} style={{ color: '#E24B4A' }} />
                             </div>
-                            <p className="text-sm" style={{ color: 'var(--text-muted)' }}>
+                            <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
                                 You will need to sign in again to access your farm dashboard.
                             </p>
                         </div>

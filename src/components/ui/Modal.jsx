@@ -1,8 +1,10 @@
-import { useEffect } from 'react'
+import { useEffect, useId, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { X } from 'lucide-react'
 
 const Modal = ({ isOpen, onClose, title, children, size = 'md', footer }) => {
+    const dialog = useRef(null)
+    const titleId = useId()
 
     useEffect(() => {
         const handleKey = (e) => { if (e.key === 'Escape') onClose() }
@@ -11,8 +13,37 @@ const Modal = ({ isOpen, onClose, title, children, size = 'md', footer }) => {
     }, [isOpen, onClose])
 
     useEffect(() => {
-        document.body.style.overflow = isOpen ? 'hidden' : ''
-        return () => { document.body.style.overflow = '' }
+        if (!isOpen) return
+        const previousFocus = document.activeElement
+        const previousOverflow = document.body.style.overflow
+        const root = document.getElementById('root')
+        const previousInert = root?.inert
+        if (root) root.inert = true
+        document.body.style.overflow = 'hidden'
+        dialog.current?.focus()
+
+        const trapFocus = event => {
+            if (event.key !== 'Tab') return
+            const controls = [...dialog.current.querySelectorAll('button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])')]
+                .filter(element => element.getClientRects().length > 0)
+            const first = controls[0]
+            const last = controls.at(-1)
+            if (!first) { event.preventDefault(); dialog.current.focus(); return }
+            if (event.shiftKey && (document.activeElement === first || document.activeElement === dialog.current)) {
+                event.preventDefault()
+                last.focus()
+            } else if (!event.shiftKey && (document.activeElement === last || document.activeElement === dialog.current)) {
+                event.preventDefault()
+                first.focus()
+            }
+        }
+        document.addEventListener('keydown', trapFocus)
+        return () => {
+            document.removeEventListener('keydown', trapFocus)
+            document.body.style.overflow = previousOverflow
+            if (root) root.inert = previousInert
+            if (previousFocus?.isConnected) previousFocus.focus()
+        }
     }, [isOpen])
 
     if (!isOpen) return null
@@ -33,8 +64,14 @@ const Modal = ({ isOpen, onClose, title, children, size = 'md', footer }) => {
             onClick={onClose}
         >
             <div
-                className={`w-full ${sizes[size]} rounded-2xl shadow-2xl`}
-                style={{ background: 'var(--bg-primary)' }}
+                ref={dialog}
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby={title ? titleId : undefined}
+                aria-label={title ? undefined : 'Confirmation'}
+                tabIndex={-1}
+                className={`w-full ${sizes[size]} rounded-2xl shadow-2xl overflow-y-auto`}
+                style={{ background: 'var(--bg-primary)', maxHeight: 'calc(100dvh - 2rem)' }}
                 onClick={(e) => e.stopPropagation()}
             >
                 {title && (
@@ -42,10 +79,12 @@ const Modal = ({ isOpen, onClose, title, children, size = 'md', footer }) => {
                         className="flex items-center justify-between px-6 py-4"
                         style={{ borderBottom: '1px solid var(--border)' }}
                     >
-                        <h3 className="text-base font-semibold" style={{ color: 'var(--text-primary)' }}>
+                        <h3 id={titleId} className="text-base font-semibold" style={{ color: 'var(--text-primary)' }}>
                             {title}
                         </h3>
                         <button
+                            type="button"
+                            aria-label="Close confirmation"
                             onClick={onClose}
                             className="w-8 h-8 rounded-full flex items-center justify-center transition-colors"
                             style={{ color: 'var(--text-muted)', border: 'none', background: 'none', cursor: 'pointer' }}
