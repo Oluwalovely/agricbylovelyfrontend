@@ -67,7 +67,8 @@ export default function Landing() {
     return (
         <div className="landing">
             <a className="landing-skip" href="#main-content">Skip to content</a>
-            <header className="landing-header landing-container">
+            <header className="landing-header">
+                <div className="landing-header-inner landing-container">
                 <Link to="/" aria-label="AgricByLovely home" className="landing-brand"><img src={logo} alt="AgricByLovely" width="84" height="84" /></Link>
                 <nav aria-label="Main navigation" className="landing-nav">
                     <a href="#features" className="landing-section-link">Features</a>
@@ -75,6 +76,7 @@ export default function Landing() {
                     <Link to="/login">Log in</Link>
                     <Link to="/register" className="landing-button landing-button-small">Create account</Link>
                 </nav>
+                </div>
             </header>
             <main id="main-content">
                 <section className="landing-hero landing-container" aria-labelledby="landing-title">

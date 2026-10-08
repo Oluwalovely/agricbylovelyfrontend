@@ -1,10 +1,12 @@
-.landing { background: var(--bg-secondary); color: var(--text-primary); }
+.landing { --landing-header-offset: 145px; background: var(--bg-secondary); color: var(--text-primary); }
 .landing-container { width: min(1240px, calc(100% - 96px)); margin-inline: auto; }
 .landing a { text-decoration: none; }
 .landing a:focus-visible, .landing button:focus-visible, .landing [tabindex="0"]:focus-visible { outline: 3px solid #80ad48; outline-offset: 5px; }
 .landing-skip { position: fixed; z-index: 100; top: 12px; left: 12px; padding: 12px 20px; background: var(--bg-primary); color: var(--text-primary); transform: translateY(-160%); }
 .landing-skip:focus { transform: translateY(0); }
-.landing-header { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding-block: 18px; border-bottom: 1px solid var(--border); }
+.landing-header { position: sticky; top: 0; z-index: 50; background: var(--bg-secondary); border-bottom: 1px solid var(--border); }
+.landing-header-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding-block: 18px; }
+.landing main[id] { scroll-margin-top: var(--landing-header-offset); }
 .landing-brand { display: inline-flex; flex-shrink: 0; }
 .landing-brand img { width: 84px; height: 84px; object-fit: contain; }
 .landing-nav { display: flex; align-items: center; gap: 32px; font-size: 14px; font-weight: 500; }
@@ -36,7 +38,7 @@
 .landing h3 { font-size: 23px; line-height: 1.35; font-weight: 500; }
 .landing-section-intro { max-width: 740px; margin-bottom: 48px; }
 .landing-section-intro p, .landing-feature p, .landing-steps p, .landing-cta p { color: var(--text-secondary); line-height: 1.85; margin-top: 18px; }
-.landing-preview-section { background: #173a28; color: #f5faef; padding-block: 88px; scroll-margin-top: 24px; }
+.landing-preview-section { background: #173a28; color: #f5faef; padding-block: 88px; scroll-margin-top: var(--landing-header-offset); }
 .landing-preview-intro { display: grid; grid-template-columns: 1fr .8fr; max-width: none; align-items: end; gap: 64px; }
 .landing-preview-intro p { color: #d1e0cd; margin-top: 0; max-width: 50ch; }
 .landing-preview-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
@@ -53,7 +55,7 @@
 .landing-preview-note p { font-size: 14px; line-height: 1.8; color: #4a5e41; margin-top: 16px; }
 .landing-preview-scroll-hint { display: none; }
 .landing-example-note { font-size: 12px; line-height: 1.8; color: #d1e0cd; margin-top: 20px; }
-.landing-features { padding-block: 100px; scroll-margin-top: 24px; }
+.landing-features { padding-block: 100px; scroll-margin-top: var(--landing-header-offset); }
 .landing-features > .landing-section-intro { margin-bottom: 64px; }
 .landing-feature-story { display: grid; grid-template-columns: .95fr 1fr; gap: 96px; align-items: center; margin-bottom: 88px; }
 .landing-feature-copy { display: flex; flex-direction: column; gap: 38px; }
@@ -67,7 +69,7 @@
 .landing-crop-detail figcaption, .landing-weather-detail figcaption { margin-top: 24px; font-size: 12px; color: #495d3b; line-height: 1.8; }
 .landing-feature-story-weather { grid-template-columns: 1fr .95fr; }
 .landing-feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 96px; border-top: 1px solid var(--border-dark); padding-top: 40px; }
-.landing-steps-section { padding-block: 88px; background: var(--bg-tertiary); scroll-margin-top: 24px; }
+.landing-steps-section { padding-block: 88px; background: var(--bg-tertiary); scroll-margin-top: var(--landing-header-offset); }
 .landing-steps-layout { display: grid; grid-template-columns: .85fr 1fr; gap: 112px; }
 .landing-steps-layout .landing-section-intro { margin-bottom: 0; }
 .landing-steps { list-style: none; }
@@ -96,8 +98,9 @@
     .landing-preview-stage { grid-template-columns: minmax(0, 1fr) 200px; gap: 24px; }
 }
 @media (max-width: 800px) {
+    .landing { --landing-header-offset: 113px; }
     .landing-container { width: calc(100% - 40px); }
-    .landing-header { gap: 12px; padding-block: 10px; }
+    .landing-header-inner { gap: 12px; padding-block: 10px; }
     .landing-brand img { width: 68px; height: 68px; }
     .landing-nav { gap: 18px; font-size: 13px; }
     .landing-section-link { display: none; }

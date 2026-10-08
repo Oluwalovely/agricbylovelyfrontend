@@ -2,6 +2,8 @@
 
 The `/` route explains existing field records, planting and harvest tracking, local weather, calendar, notifications, and reports. It retains the logo, green identity, Lora headings, Plus Jakarta Sans body text, and six-part sequence: hero, app preview, features, setup steps, closing account action, and footer. Login and registration use their existing routes.
 
+The full-width navigation stays at the top while scrolling, using an opaque theme-aware background. Section links and the skip link account for its desktop/mobile height so headings remain visible below it.
+
 The approved visual enhancement adds a larger headline with a solid green italic phrase, an asymmetrically curved farm photograph with a crop-progress overlay, a deep green (`#173a28`) product section, alternating crop/weather illustrations, and a connected numbered setup list. All six feature descriptions remain; Reports describes recorded yields, without an income claim.
 
 The product section has keyboard-accessible Dashboard, Crop progress, Weather, and Harvest dates tabs. Arrow keys, Home, and End change the selected tab and focus. Narrow screens provide a scrollable dashboard image and a visible hint. Focus outlines, the skip link, and reduced-motion support remain in place. The photograph has a restrained entrance; the product stage reveals once when it enters the viewport. Reduced-motion styles disable both animations.

@@ -112,6 +112,8 @@ components:
 
 ## Overview
 
+Landing navigation stays at the viewport top while scrolling. The outer `.landing-header` uses sticky positioning, `top: 0`, z-index 50, and the opaque secondary background. `.landing-header-inner` retains the centered content width. Section scroll offsets are 145px on desktop and 113px below 800px, leaving room below the 121px/89px header.
+
 The existing app remains the visual authority: preserve its green palette, Lora headings, Plus Jakarta Sans body text, and `src/assets/logo.png`. This record covers the user-approved landing enhancement only. It does not prescribe a redesign of authenticated screens or establish additional product facts.
 
 The public route pairs a stronger serif headline and farm photograph with real interface captures. A deep green product section and alternating crop/weather illustrations give the page a clearer rhythm while retaining its six-part structure and concrete copy.
