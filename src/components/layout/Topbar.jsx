@@ -19,7 +19,7 @@ const pageTitles = {
     '/profile': 'Farm Profile',
 }
 
-const Topbar = ({ onMenuClick }) => {
+const Topbar = ({ onMenuClick, sidebarOpen }) => {
     const location = useLocation()
     const navigate = useNavigate()
     const { farmer } = useAuthStore()
@@ -55,6 +55,10 @@ const Topbar = ({ onMenuClick }) => {
                 {/* Hamburger — mobile only */}
                 <button
                     onClick={onMenuClick}
+                    type="button"
+                    aria-label="Open sidebar"
+                    aria-expanded={sidebarOpen}
+                    aria-controls="farm-navigation"
                     className="md:hidden p-2 rounded-xl transition-colors"
                     style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)' }}
                     onMouseEnter={e => e.currentTarget.style.background = 'var(--bg-tertiary)'}

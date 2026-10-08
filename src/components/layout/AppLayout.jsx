@@ -43,8 +43,8 @@ const AppLayout = () => {
         >
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
-            <div className="flex-1 flex flex-col overflow-hidden">
-                <Topbar onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
+            <div className="flex-1 min-w-0 flex flex-col overflow-hidden">
+                <Topbar sidebarOpen={sidebarOpen} onMenuClick={() => setSidebarOpen(value => !value)} />
 
                 {/* Scrollable page area with background image */}
                 <main

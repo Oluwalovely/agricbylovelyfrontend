@@ -49,26 +49,24 @@ const Sidebar = ({ isOpen, onClose }) => {
             {/* Sidebar panel */}
             <aside
                 className={`
-          fixed top-0 left-0 h-full z-50 flex flex-col overflow-hidden
+          fixed top-0 left-0 h-full z-50 flex flex-col overflow-hidden shrink-0 w-56
           transition-all duration-300 ease-in-out
           md:relative md:translate-x-0
-          ${isOpen ? 'translate-x-0' : '-translate-x-full'}
+          ${isOpen ? 'translate-x-0 visible' : '-translate-x-full invisible md:visible'}
           ${collapsed ? 'md:w-16' : 'md:w-56'}
         `}
                 style={{
                     background: 'var(--bg-primary)',
                     borderRight: '1px solid var(--border)',
                     boxShadow: 'var(--shadow-md)',
-                    width: '220px',
                 }}
             >
                 {/* Logo area */}
                 <div
-                    className="flex items-center justify-between px-4 py-4"
+                    className={`flex items-center justify-between px-4 py-4 ${collapsed ? 'md:justify-center md:px-2' : ''}`}
                     style={{ borderBottom: ' var(--border)', minHeight: '80px' }}
                 >
-                    {!collapsed && (
-                        <div className="flex-1 flex items-center justify-center">
+                        <div className={`flex-1 flex items-center justify-center ${collapsed ? 'md:hidden' : ''}`}>
                             <div
                                 className="w-20 h-20 rounded-2xl flex items-center justify-center"
                                 
@@ -76,15 +74,16 @@ const Sidebar = ({ isOpen, onClose }) => {
                                 <img
                                     src={logoImage}
                                     alt="AgricbyLovely"
-                                    className="w-18 h-18 object-contain"
+                                    className="w-full h-full object-contain"
                                     style={{ filter: 'brightness(1.15) contrast(1.1)' }}
                                 />
                             </div>
                         </div>
-                    )}
 
                     {/* Mobile close button */}
                     <button
+                        type="button"
+                        aria-label="Close sidebar"
                         onClick={onClose}
                         className="md:hidden p-1 rounded-lg"
                         style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)' }}
@@ -94,8 +93,13 @@ const Sidebar = ({ isOpen, onClose }) => {
 
                     {/* Desktop collapse toggle */}
                     <button
-                        onClick={() => setCollapsed(!collapsed)}
-                        className="hidden md:flex p-1 rounded-lg transition-colors"
+                        type="button"
+                        aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+                        title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+                        aria-expanded={!collapsed}
+                        aria-controls="farm-navigation"
+                        onClick={() => setCollapsed(value => !value)}
+                        className="hidden md:flex items-center justify-center w-8 h-8 rounded-lg transition-colors"
                         style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)' }}
                     >
                         {collapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
@@ -103,15 +107,18 @@ const Sidebar = ({ isOpen, onClose }) => {
                 </div>
 
                 {/* Navigation items*/}
-                <nav className="flex-1 overflow-y-auto py-3 px-2">
+                <nav id="farm-navigation" aria-label="Farm navigation" className="flex-1 overflow-y-auto py-3 px-2">
                     {navItems.map(({ icon: Icon, label, path }) => (
                         <NavLink
                             key={path}
                             to={path}
+                            aria-label={label}
+                            title={label}
                             onClick={onClose} // close on mobile after clicking
                             className={({ isActive }) => `
                 flex items-center gap-3 px-3 py-2.5 rounded-xl mb-1
                 text-sm font-medium transition-all duration-150 no-underline
+                ${collapsed ? 'md:justify-center md:px-0' : ''}
                 ${isActive
                                     ? 'text-[#27500A] bg-[#EAF3DE]'
                                     : 'text-[var(--text-secondary)] hover:bg-[var(--bg-tertiary)] hover:text-[var(--text-primary)]'
@@ -122,23 +129,26 @@ const Sidebar = ({ isOpen, onClose }) => {
                             })}
                         >
                             <Icon size={18} style={{ flexShrink: 0 }} />
-                            {!collapsed && <span className="truncate">{label}</span>}
+                            <span className={`truncate ${collapsed ? 'md:hidden' : ''}`}>{label}</span>
                         </NavLink>
                     ))}
                 </nav>
 
                 {/* ── Farmer profile + logout ──────── */}
                 <div
-                    className="p-3"
+                    className={`p-3 ${collapsed ? 'md:px-2' : ''}`}
                     style={{ borderTop: '1px solid var(--border)' }}
                 >
                     {/* Profile link */}
                     <NavLink
                         to="/profile"
+                        aria-label="Farm profile"
+                        title="Farm profile"
                         onClick={onClose}
                         className={({ isActive }) => `
               flex items-center gap-3 px-3 py-2.5 rounded-xl mb-1
               text-sm font-medium transition-all duration-150 no-underline
+              ${collapsed ? 'md:justify-center md:px-0' : ''}
               ${isActive
                                 ? 'text-[#27500A] bg-[#EAF3DE]'
                                 : 'text-[var(--text-secondary)] hover:bg-[var(--bg-tertiary)]'
@@ -152,8 +162,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                         >
                             <Avatar farmer={farmer} />
                         </div>
-                        {!collapsed && (
-                            <div className="flex-1 min-w-0">
+                            <div className={`flex-1 min-w-0 ${collapsed ? 'md:hidden' : ''}`}>
                                 <p className="text-xs font-semibold truncate" style={{ color: 'var(--text-primary)' }}>
                                     {farmer?.firstName} {farmer?.lastName}
                                 </p>
@@ -161,19 +170,21 @@ const Sidebar = ({ isOpen, onClose }) => {
                                     {farmer?.farmName}
                                 </p>
                             </div>
-                        )}
                     </NavLink>
 
                     {/* Logout button */}
                     <button
+                        type="button"
+                        aria-label="Logout"
+                        title="Logout"
                         onClick={() => setShowLogoutModal(true)}
-                        className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors"
+                        className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${collapsed ? 'md:justify-center md:px-0' : ''}`}
                         style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)' }}
                         onMouseEnter={e => e.currentTarget.style.background = '#FAECE7'}
                         onMouseLeave={e => e.currentTarget.style.background = 'none'}
                     >
                         <LogOut size={18} style={{ flexShrink: 0, color: '#E24B4A' }} />
-                        {!collapsed && <span style={{ color: '#E24B4A' }}>Logout</span>}
+                        <span className={collapsed ? 'md:hidden' : ''} style={{ color: '#E24B4A' }}>Logout</span>
                     </button>
 
                     {/* Logout confirmation modal */}
