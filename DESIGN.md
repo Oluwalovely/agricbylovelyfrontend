@@ -1,34 +1,54 @@
----
-name: AgricByLovely — incumbent identity and landing extension
-description: Existing app identity, with visual guidance bounded to the public landing route.
+﻿---
+name: AgricByLovely — landing extension
+description: Existing app identity with visual guidance scoped to the public landing route.
 colors:
   green-dark: "#3B6D11"
   green-mid: "#639922"
-  green-light: "#EAF3DE"
-  green-pale: "#F2F8EA"
   bg-primary: "#FFFFFF"
   bg-secondary: "#F8FAF5"
   bg-tertiary: "#F2F5EE"
   text-primary: "#1A1A1A"
   text-secondary: "#4B5563"
   border-dark: "#D1D9CA"
+  showcase-green: "#173a28"
+  showcase-surface: "#f2f6ec"
+  focus-green: "#80ad48"
   button-hover: "#2c530c"
+  white: "#fff"
+  photo-ground: "#203517"
+  crop-overlay-surface: "#f2f7eb"
+  crop-overlay-heading: "#365422"
+  crop-overlay-caption: "#526746"
+  headline-dark-mode: "#b9d998"
+  showcase-heading: "#f5faef"
+  showcase-copy: "#d1e0cd"
+  tab-border: "#52735d"
+  tab-text: "#e0edd9"
+  tab-hover: "#28513a"
+  tab-selected-surface: "#deedc7"
+  tab-selected-text: "#193720"
+  stage-heading: "#192919"
+  stage-copy: "#4a5e41"
+  feature-icon-dark-mode: "#b2d68d"
+  crop-detail-surface: "#e8efdc"
+  weather-detail-surface: "#ede8dc"
+  detail-caption: "#495d3b"
 typography:
   display:
     fontFamily: "Lora, serif"
-    fontSize: "clamp(36px, 4.35vw, 60px)"
+    fontSize: "clamp(42px, 5.25vw, 76px)"
     fontWeight: 500
-    lineHeight: 1.12
-    letterSpacing: "-.035em"
+    lineHeight: 1.06
+    letterSpacing: "-.04em"
   headline:
     fontFamily: "Lora, serif"
-    fontSize: "clamp(28px, 3vw, 40px)"
+    fontSize: "clamp(30px, 3.6vw, 50px)"
     fontWeight: 500
-    lineHeight: 1.2
-    letterSpacing: "-.025em"
+    lineHeight: 1.15
+    letterSpacing: "-.03em"
   title:
     fontFamily: "Lora, serif"
-    fontSize: "22px"
+    fontSize: "23px"
     fontWeight: 500
     lineHeight: 1.35
   body:
@@ -38,17 +58,52 @@ typography:
     fontFamily: "Plus Jakarta Sans, sans-serif"
     fontSize: "14px"
     fontWeight: 600
+  hero-body:
+    fontFamily: "Plus Jakarta Sans, sans-serif"
+    fontSize: "16px"
+    lineHeight: 1.85
+  feature-body:
+    fontSize: "15px"
+    lineHeight: 1.85
+  overlay-label:
+    fontSize: "13px"
+    fontWeight: 600
+  example-label:
+    fontSize: "10px"
+    fontWeight: 400
+  example-label-small:
+    fontSize: "9px"
+  overlay-caption:
+    fontSize: "11px"
+    lineHeight: 1.7
+  caption:
+    fontSize: "12px"
+    lineHeight: 1.8
+  scroll-hint:
+    fontSize: "12px"
+    lineHeight: 1.7
+  stage-title:
+    fontFamily: "Lora, serif"
+    fontSize: "28px"
+  stage-title-small:
+    fontSize: "24px"
+  step-number:
+    fontFamily: "Lora, serif"
+    fontSize: "22px"
+  display-tablet:
+    fontSize: "clamp(42px, 8vw, 64px)"
+  display-small:
+    fontSize: "43px"
 rounded:
   action: "999px"
-  photograph: "16px"
-  preview: "12px"
+  surface: "16px"
 components:
   landing-button-primary:
     backgroundColor: "{colors.green-dark}"
     textColor: "#fff"
     typography: "{typography.label}"
     rounded: "{rounded.action}"
-    padding: "15px 24px"
+    padding: "16px 26px"
   landing-button-primary-hover:
     backgroundColor: "{colors.button-hover}"
 ---
@@ -57,63 +112,55 @@ components:
 
 ## Overview
 
-The existing app is the visual authority. Preserve its green palette, Lora headings, Plus Jakarta Sans body text, and the existing logo asset at `src/assets/logo.png`. This document records that identity and the current public landing route extension; it does not authorize a redesign of authenticated screens or establish new product facts.
+The existing app remains the visual authority: preserve its green palette, Lora headings, Plus Jakarta Sans body text, and `src/assets/logo.png`. This record covers the user-approved landing enhancement only. It does not prescribe a redesign of authenticated screens or establish additional product facts.
 
-The landing page uses readable serif headings, pale backgrounds, concrete farm imagery, and clear account actions. Its presentation follows the incumbent identity rather than introducing a new visual metaphor. The measurements and component details below describe the landing surface only unless explicitly identified as global tokens.
+The public route pairs a stronger serif headline and farm photograph with real interface captures. A deep green product section and alternating crop/weather illustrations give the page a clearer rhythm while retaining its six-part structure and concrete copy.
 
-**The Incumbent Authority Rule.** Use `src/index.css` as the live source for global color and font variables. Use `src/pages/Landing.css` for landing-specific measurements and behavior. If implementation changes, refresh this record rather than treating an outdated snapshot as a competing theme.
+**The Incumbent Authority Rule.** Global identity and theme variables come from `src/index.css`; landing measurements and behaviors come from `src/pages/Landing.css`. This document records their implementation rather than creating a competing theme.
 
 ## Colors
 
-Primary: the existing dark green carries account actions and light-mode feature icons. Mid green provides visible keyboard focus. Light and pale green remain part of the incumbent app palette; their presence here does not require adding new landing decorations.
+Existing green carries account actions and feature icons. Existing background, text, and border variables follow the app's light/dark theme. The landing's product showcase uses a fixed deep green background, pale screenshot stage, and light text; illustration surfaces remain pale so actual app captures remain legible.
 
-Neutral: primary, secondary, and tertiary backgrounds separate the landing's sections; primary text carries headings and navigation, secondary text carries explanatory copy, and the darker border separates features and the footer. The frontmatter values capture light mode.
-
-The global `.dark` class replaces backgrounds with `#111827`, `#0D1410`, and `#1A2318`; primary and secondary text become `#F9FAFB` and `#D1D5DB`, and the darker border becomes `#2D3F28`. Landing feature icons use `#b2d68d` in dark mode. These existing overrides must remain functional.
-
-**The Shared Color Rule.** Resolve landing surfaces and text through existing CSS variables so the route follows the app's theme. Keep the existing primary button hover treatment; do not introduce another accent palette.
+The headline's final phrase is green and italic, with a lighter green override in dark mode. It is a solid color, without a gradient. The frontmatter includes the observed landing focus color, which is distinct from the global mid-green token.
 
 ## Typography
 
-Lora is the global heading family and the landing footer's brand-name family. Plus Jakarta Sans is the global body family, used for explanatory paragraphs, navigation, captions, and action labels. Font loading is already defined in `src/index.css`.
-
-The frontmatter records the landing heading hierarchy. Hero paragraphs use larger body text (17px, line-height 1.8, maximum 54ch), reduced to 16px on small screens. Feature and step descriptions use compact body text (14px, line-height 1.8). Preview captions use 13px text with line-height 1.7. Headings use balanced wrapping.
-
-**The Existing Type Rule.** Preserve these two font families and use type size, weight, and spacing to clarify hierarchy within the landing route.
+Keep Lora for headings and the footer brand name; use Plus Jakarta Sans for paragraphs, navigation, captions, and controls. The frontmatter captures desktop heading roles. At 800px and below the hero heading uses `clamp(42px, 8vw, 64px)`; at 480px and below it uses 43px. Hero paragraphs use 16px text, line-height 1.85, and a maximum 53ch on desktop. Feature descriptions use 15px text. Product-stage titles use 28px, reduced to 24px at 800px.
 
 ## Layout
 
-The public route has a header followed by the existing six-part sequence: hero, dashboard preview, features, setup steps, closing account action, and footer. Keep that sequence. `LANDING.md` holds the surface's content and screenshot context; neither this sequence nor its marketing strategy is a rule for authenticated app screens.
+The route retains a header followed by hero, app preview, features, setup steps, closing account action, and footer. This composition is specific to the landing route.
 
-Landing content uses a centered container capped at 1184px, with 40px side margins. The desktop hero pairs copy and a photograph in a two-column grid (1.12fr / 1fr). The features form three columns; setup steps use two columns. Section spacing ranges from 80px to 96px vertically, with larger gaps between section introductions and content.
+The centered container caps at 1240px with 48px side margins. Desktop hero columns use a 1.08fr / 1fr split. The photograph has an overlapping crop-progress capture. The preview stage pairs a screenshot with supporting text; features alternate paired descriptions and crop/weather illustrations, followed by two remaining feature descriptions. The setup section pairs its introduction with a connected three-step list. Desktop section spacing generally ranges from 88px to 100px.
 
-At 1000px and below, features become two columns and horizontal gaps reduce. At 700px and below, the container uses 20px side margins, the hero, features, and setup steps become single-column, section spacing reduces to 56px, and the footer stacks. Header section links hide while login and registration remain available. Account actions wrap rather than overflowing.
+At 1100px and below, container margins become 32px and gaps tighten. At 800px and below, margins become 20px; the hero, preview stage, feature stories, and setup layout stack. Header section links hide while account routes remain visible. At 480px and below, major section spacing becomes 60px, the final feature pair and footer stack, and the dashboard image becomes scrollable with an explicit hint. Account actions and preview tabs wrap.
 
 ## Elevation & Depth
 
-Section backgrounds and thin dividers provide most of the landing's separation. Features are open articles rather than raised cards. The dashboard screenshot has the existing preview shadow (`0 14px 48px rgba(30, 50, 20, .12)`). The global app also defines small, medium, and large shadow variables; this landing record does not prescribe their use elsewhere.
+Tonal sections provide the main separation. Soft shadows lift the hero's crop overlay and selected screenshot close-ups. Primary buttons gain a small shadow on hover. Feature descriptions remain open text regions; their final pair has a shared top divider.
 
 ## Shapes
 
-Account actions use pill corners (999px). The hero photograph uses softly rounded corners (16px) with clipping; the dashboard image uses a smaller radius (12px). Feature articles begin with a thin top border. Retain this division between rounded imagery and open text regions.
+Actions and screenshot tabs use pill corners. Product and illustration surfaces use 16px corners. The hero photograph has an asymmetric curved top-left corner (160px desktop, 120px at 800px, 90px at 480px) with the other corners at 16px. Step numbers use circular 48px outlines, joined by thin vertical lines.
 
 ## Components
 
-Primary account links use the green pill style, white text, a minimum height of 48px, and a short background transition (160ms, ease-out). The header variant uses tighter padding (11px 20px; 10px 16px on small screens). Supporting actions use text links with small arrows and a minimum height of 44px; hover adds an underline.
+Primary account links retain the existing dark green and white treatment, 48px minimum height, and 180ms hover transitions. Supporting text links use small arrows; arrows move 3px on hover. Header navigation keeps the existing logo and account routes. Landing links, buttons, and focusable preview regions have a visible 3px focus outline with 5px offset. Preserve the skip link.
 
-Header navigation keeps the original logo, existing account routes, and in-page anchors. Navigation and footer links underline on hover. Every landing link has a visible focus outline (3px, mid green, 5px offset). A skip link reveals itself on focus and targets the main content.
+The app preview has four tabs: Dashboard, Crop progress, Weather, and Harvest dates. Selected tabs use a pale green fill. Arrow keys cycle tabs; Home and End jump to the first and last. Roving tab stops, selected state, and panel labeling keep keyboard navigation understandable. On narrow screens the dashboard capture remains horizontally scrollable and keyboard focusable.
 
-The hero uses the existing farm photograph with an attached caption. The dashboard preview uses the real interface screenshot with explicitly labeled example records. Features use existing line icons, headings, and descriptions without enclosed cards. Setup uses a native numbered list. The footer combines the brand name, a short description, and existing navigation links.
+Actual app captures use isolated example farm records and weather, with visible example labels. The crop overlay, crop detail, and weather detail reuse these captures. The setup remains a semantic ordered list with decorative numbers hidden from assistive technology.
 
-Reduced-motion behavior removes landing transitions and disables smooth scrolling. Preserve this behavior when adding polish.
+The photograph enters with a restrained 800ms scale/clip animation. An IntersectionObserver triggers the product stage's 650ms reveal once, at a 0.15 threshold. Content remains visible if the observer is unavailable. Reduced-motion styles disable landing animations, transitions, and smooth scrolling.
 
 ## Do's and Don'ts
 
-- **Do** preserve the existing green colors, two font families, logo, and six-part landing sequence.
-- **Do** use existing theme variables, readable wrapping, and visible keyboard focus.
-- **Do** retain truthful image captions and concrete descriptions of implemented behavior.
-- **Don't** turn landing-specific measurements into a mandatory app-wide component system.
-- **Don't** invent testimonials, adoption statistics, yield guarantees, pricing promises, or additional product features.
-- **Don't** present screenshot example records as customer data or guaranteed outcomes.
+- **Do** retain the existing green identity, fonts, logo, and six-part landing sequence.
+- **Do** preserve visible focus, keyboard tab operation, responsive wrapping, and reduced-motion behavior.
+- **Do** label captures as examples and keep harvest dates explicitly estimated.
+- **Don't** promote these landing compositions into an app-wide redesign prescription.
+- **Don't** invent testimonials, adoption statistics, yield guarantees, pricing promises, or additional features.
+- **Don't** describe Reports as income reporting; the current copy describes recorded yields.
 
-This is a bounded extraction from `src/index.css`, `src/pages/Landing.jsx`, `src/pages/Landing.css`, and `LANDING.md`. No additional product or visual direction is inferred. A component-preview sidecar is intentionally omitted: this task records the existing landing authority rather than defining a new reusable component library.
+Source scope: `src/index.css`, `src/pages/Landing.jsx`, `src/pages/Landing.css`, and `LANDING.md`. No component-preview sidecar is maintained for this bounded surface.
