@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 import FarmForm, { Message } from '../components/farm/FarmForm.jsx'
 import Input from '../components/ui/Input.jsx'
+import PhotoEditor from '../components/farm/PhotoEditor.jsx'
 import Button from '../components/ui/Button.jsx'
 import farmerService from '../services/farmer.service.js'
 import { apiErrorMessage } from '../services/api.js'
@@ -27,6 +28,7 @@ export default function Profile() {
   if (profile.error) return <div role="alert"><p>Unable to load your profile.</p><Button onClick={() => profile.refetch()}>Try again</Button></div>
   return <div className="max-w-4xl space-y-6">
     <header><h1 className="text-3xl mb-2">Your profile</h1><p style={{ color: 'var(--text-secondary)' }}>Keep your farm details and account information up to date.</p></header>
+    <section className="rounded-2xl p-5 sm:p-7" style={panelStyle}><PhotoEditor kind="avatar" id={farmer.id} url={profile.data.avatarUrl} label="Profile photo" /></section>
     <section className="rounded-2xl p-5 sm:p-7" style={panelStyle}>
       <Message>{saved && 'Your profile has been saved.'}</Message>
       <FarmForm key={profile.data.id} initial={profile.data} kind="profile" pending={save.isPending} error={save.error && apiErrorMessage(save.error)} onSave={data => { setSaved(false); save.mutate(data) }} />

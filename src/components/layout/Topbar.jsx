@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 import useAuthStore from '../../store/authStore.js'
 import useThemeStore from '../../store/themeStore.js'
 import notificationService from '../../services/notification.service.js'
+import Avatar from '../ui/Avatar.jsx'
 
 
 const pageTitles = {
@@ -149,11 +150,7 @@ const Topbar = ({ onMenuClick }) => {
                     }}
                     title="My profile"
                 >
-                    {farmer?.avatarUrl ? (
-                        <img src={farmer.avatarUrl} alt="avatar" className="w-full h-full object-cover" />
-                    ) : (
-                        <span>{farmer?.firstName?.[0] || 'F'}</span>
-                    )}
+                    <Avatar farmer={farmer} />
                 </button>
             </div>
         </header>

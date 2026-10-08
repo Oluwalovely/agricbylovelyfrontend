@@ -1,5 +1,5 @@
 import logoImage from '../assets/logo.png'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -9,9 +9,10 @@ import { useMutation } from '@tanstack/react-query'
 import Button from '../components/ui/Button.jsx'
 import Input from '../components/ui/Input.jsx'
 import authService from '../services/auth.service.js'
+import { apiErrorMessage } from '../services/api.js'
 
 const schema = z.object({
-    newPassword: z.string().min(8, 'Password must be at least 8 characters'),
+    newPassword: z.string().min(8, 'Password must be at least 8 characters').max(100),
     confirmPassword: z.string(),
 }).refine(d => d.newPassword === d.confirmPassword, {
     message: 'Passwords do not match',
@@ -24,6 +25,11 @@ const ResetPassword = () => {
     const [success, setSuccess] = useState(false)
     const [searchParams] = useSearchParams()
     const navigate = useNavigate()
+    useEffect(() => {
+        if (!success) return
+        const timer = setTimeout(() => navigate('/login'), 3000)
+        return () => clearTimeout(timer)
+    }, [success, navigate])
 
     const token = searchParams.get('token')
 
@@ -35,12 +41,11 @@ const ResetPassword = () => {
         mutationFn: (data) => authService.resetPassword({ token, newPassword: data.newPassword }),
         onSuccess: () => {
             setSuccess(true)
-            setTimeout(() => navigate('/login'), 3000)
         },
     })
 
     // No token in URL
-    if (!token) {
+    if (!token || !/^[a-f0-9]{64}$/.test(token)) {
         return (
             <div className="min-h-screen flex items-center justify-center px-6" style={{ background: 'var(--bg-secondary)' }}>
                 <div className="w-full max-w-sm text-center">
@@ -87,7 +92,7 @@ const ResetPassword = () => {
                             {error && (
                                 <div className="px-4 py-3 rounded-xl text-sm mb-5"
                                     style={{ background: 'var(--red-light)', color: '#712B13', border: '1px solid #E24B4A' }}>
-                                    {error.response?.data?.message || 'This reset link has expired. Please request a new one.'}
+                                    {apiErrorMessage(error, 'Could not reset your password. Check your connection and try again.')}
                                 </div>
                             )}
 

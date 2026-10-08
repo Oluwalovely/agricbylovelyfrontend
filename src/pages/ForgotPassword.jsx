@@ -9,6 +9,7 @@ import { useMutation } from '@tanstack/react-query'
 import Button from '../components/ui/Button.jsx'
 import Input from '../components/ui/Input.jsx'
 import authService from '../services/auth.service.js'
+import { apiErrorMessage } from '../services/api.js'
 
 const schema = z.object({
     email: z.string().email('Please enter a valid email address'),
@@ -21,10 +22,9 @@ const ForgotPassword = () => {
         resolver: zodResolver(schema),
     })
 
-    const { mutate, isPending } = useMutation({
+    const { mutate, isPending, error } = useMutation({
         mutationFn: (data) => authService.forgotPassword(data.email),
         onSuccess: () => setSubmitted(true),
-        onError: () => setSubmitted(true), // show success regardless to prevent email enumeration
     })
 
     return (
@@ -60,6 +60,7 @@ const ForgotPassword = () => {
                                 Enter your email and we will send you a link to reset your password.
                             </p>
                             <form onSubmit={handleSubmit(mutate)} className="flex flex-col gap-4">
+                                {error && <p role="alert" className="text-sm" style={{ color: '#b42318' }}>{apiErrorMessage(error, 'Could not request a reset. Check your connection and try again.')}</p>}
                                 <Input
                                     label="Email address"
                                     type="email"
@@ -92,7 +93,7 @@ const ForgotPassword = () => {
                                 {getValues('email')}
                             </p>
                             <p className="text-sm text-center mb-8" style={{ color: 'var(--text-muted)' }}>
-                                you will receive a password reset link shortly. Check your spam folder if you don't see it.
+                                a password reset has been requested. Check your inbox and spam folder. If no link arrives, try again later.
                             </p>
                             <Button
                                 variant="outline"

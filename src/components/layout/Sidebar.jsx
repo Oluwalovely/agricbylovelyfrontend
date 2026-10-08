@@ -7,6 +7,7 @@ import {
 } from 'lucide-react'
 import { useState } from 'react'
 import useAuthStore from '../../store/authStore.js'
+import Avatar from '../ui/Avatar.jsx'
 import authService from '../../services/auth.service.js'
 
 // Navigation items — each maps to a page
@@ -149,10 +150,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                             className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-semibold"
                             style={{ background: 'var(--green-light)', color: 'var(--green-dark)' }}
                         >
-                            {farmer?.avatarUrl
-                                ? <img src={farmer.avatarUrl} alt="avatar" className="w-full h-full rounded-full object-cover" />
-                                : (farmer?.firstName?.[0] || 'F')
-                            }
+                            <Avatar farmer={farmer} />
                         </div>
                         {!collapsed && (
                             <div className="flex-1 min-w-0">

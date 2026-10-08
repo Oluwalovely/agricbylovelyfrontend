@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { useState, useEffect } from 'react'
 import PlantingActions from '../components/crops/PlantingActions.jsx'
+import PhotoEditor from '../components/farm/PhotoEditor.jsx'
 import { Link, useSearchParams } from 'react-router-dom'
 import cropService from '../services/crop.service.js'
 import useAuthStore from '../store/authStore.js'
@@ -36,6 +37,7 @@ export default function MyCrops() {
         {record.notes && <p className="text-sm mt-4 whitespace-pre-line break-words">{record.notes}</p>}
         {record.harvestedAt && <p className="text-sm mt-3">Recorded yield: {record.yieldKg == null ? 'Not recorded' : `${record.yieldKg} kg`}</p>}
         <PlantingActions record={record} onUpdated={(message, harvest) => { setNotice(message); if (harvest) selectStatus('harvested') }} />
+        <PhotoEditor kind="crops" id={record.id} url={record.photoUrl} label={`${record.crop.name} planting photo`} />
       </article>)}
     </section>}
   </div>
