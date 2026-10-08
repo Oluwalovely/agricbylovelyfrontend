@@ -1,13 +1,19 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom'
 import useAuthStore from '../../store/authStore.js'
 import Button from '../ui/Button.jsx'
+import logoImage from '../../assets/logo.png'
 
 const ProtectedRoute = () => {
   const { isLoggedIn, isInitializing, sessionError, checkAuth, clearAuth } = useAuthStore()
   const location = useLocation()
 
   if (isInitializing) {
-    return <div role="status" className="min-h-screen flex items-center justify-center">Loading your farm account?</div>
+    return (
+      <div role="status" className="min-h-screen flex items-center justify-center px-6" style={{ background: 'var(--bg-secondary)' }}>
+        <img src={logoImage} alt="" width={176} height={176} className="account-loading-logo" />
+        <span className="sr-only">Loading your farm account.</span>
+      </div>
+    )
   }
   if (sessionError) {
     return (
